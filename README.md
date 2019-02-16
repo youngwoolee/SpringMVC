@@ -1,4 +1,4 @@
-### Spring MVC
+### 1부 Spring MVC 동작원리
 
 - 서블릿(Servlet)
     - 웹 애플리케이션 개발용 스팩과 API 제공
@@ -68,5 +68,89 @@
     6. 최종적으로 응답을 보낸다.
 
 
+- DispatcherServlet 동작 원리 2
+    - HandlerMapping
+        - RequestMappingHandlerMapping (3.1 이상부터 default)
+          
+    - HandlerAdapter
+        - RequestMappingHandlerAdapter (3.1 이상부터 default)
 
+    - HandlerMapping
+        - BeanNameUrlHandlerMapping
+           
+    - HandlerAdapter
+        - SimpleControllerHandlerAdapter
+
+- DispatcherServlet 동작 원리 3
+    - ViewResolver
+        - InternalResourceViewResolver(default)
         
+```
+@Configuration
+@ComponentScan
+public class WebConfig {
+
+   @Bean
+   public InternalResourceViewResolver viewResolver() {
+       InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+       viewResolver.setPrefix("/WEB-INF/");
+       viewResolver.setSuffix(".jsp");
+       return viewResolver;
+   }
+
+}
+
+```
+
+- 스프링 MVC 구성요소
+    - MultipartResolver
+        - 파일 업로드 요청 처리에 필요한 인터페이스
+        - HttpServletRequest를 MultipartHttpServletRequest로 변환해주어 요청이 담고 있는 File을 꺼낼 수 있는 API 제공.
+        
+    - LocaleResolver
+        - 파일 업로드 요청 처리에 필요한 인터페이스
+        - HttpServletRequest를 MultipartHttpServletRequest로 변환해주어 요청이 담고 있는 File을 꺼낼 수 있는 API 제공.
+       
+    - ThemeResolver
+        - 애플리케이션에 설정된 테마를 파악하고  변경할 수 있는 인터페이스
+        - 참고: https://memorynotfound.com/spring-mvc-theme-switcher-example/
+
+    - HandlerMapping
+        - 요청을 처리할 핸들러를 찾는 인터페이스
+    
+    - HandlerAdapter
+        - HandlerMapping이 찾아낸 핸들러를 처리하는 인터페이스
+        - 스프링 MVC 확장력의 핵심
+    
+    - HandlerExceptionResolver
+        - 요청 처리 중에 발생한 에러 처리하는 인터페이스
+        
+    - RequestToViewNameTranslator
+        - 핸들러에서 뷰 이름을 명시적으로 리턴하지 않은 경우, 요청을 기반으로 뷰 이름을 판단하는 인터페이스
+        
+    - ViewResolver
+        - 뷰 이름(String)에 해당하는 뷰를 찾아내는 인터페이스
+        
+    - FlashMapManager
+        - FlashMap 인스턴스를 가져오고 저장하는 인터페이스
+        - FlashMap 은 주로 리다이렉션을 사용할 때 요청 매개변수를 사용하지 않고 데이터를 전달하고 정리할 때 사용한다
+        - redirect:/events
+        
+- 스프링 동작 원리 정리
+    - DispatcherServlet 초기화
+        1. 특정 타입에 해당하는 빈을 찾는다.
+        2. 없으면 기본전략을 사용한다. (DispatcherServlet.properties)
+        
+    - 스프링 부트 사용하지 않는 스프링 MVC
+        - 서블릿 컨테이너(ex, 톰캣)에 등록한 웹 애플리케이션(WAR)에 DispatcherServlet을 등록한다
+            - web.xml에 서블릿 등록
+            - 또는 WebApplicationInitializer에 자바 코드로 서블릿 등록
+            
+    - 스프링 부트를 사용하는 스프링 MVC
+        -자바 어플리케이션에 내장 톰캣을 만들고 그 안에 DispatcherServlet을 등록한다
+            - 스프링 부트 자동 설정이 자동으로 해줌
+        - 스프링 부트의 주관에 따라 여러 인터페이스 구현체를 빈으로 등록한다
+       
+### 2부 스프링 MVC 설정
+     
+- 스프링 MVC 빈 설정
