@@ -151,6 +151,46 @@ public class WebConfig {
             - 스프링 부트 자동 설정이 자동으로 해줌
         - 스프링 부트의 주관에 따라 여러 인터페이스 구현체를 빈으로 등록한다
        
-### 2부 스프링 MVC 설정
+## 2부 스프링 MVC 설정
      
-- 스프링 MVC 빈 설정
+### 스프링 MVC 빈 설정
+
+- @EnableWebMvc
+    - 애노테이션 기반 스프링 MVC 사용할 때 편리한 웹 MVC 기본 설정
+    - requestMappingHandler에서 RequestMappingHandlerMapping을 BeanNameUrlMappingHandler 보다 order를 높게줌 
+    - 기본적으로 사용되는 인터셉터도 추가해줌
+    - messageConverter 도 기본적으로 추가 해줌 classpath에 따라 필요클래스도 동적으로 추가해줌
+    - 기본적으로 사용하는 viewResolver 등록
+
+### WebMvcConfigurer
+
+- @EnableMvc가 제공하는 빈을 커스터마이징 할 수 있는 기능을 제공하는 인터페이스
+    
+    ```java
+    @Configuration
+    @EnableWebMvc
+    public class WebConfig implements WebMvcConfigurer {
+    
+       @Override
+       public void configureViewResolvers(ViewResolverRegistry registry) {
+           registry.jsp("/WEB-INF/", ".jsp");
+       }
+    }
+    ```
+
+###스프링 부트의 스프링 MVC 설정 
+
+- 스프링 MVC 커스터마이징
+    - application.properties
+        - ResourceProperties.java 에 prefix 로 몇가지 설정 되어있음
+    - @Configuration + implements WebMvcConfigurer
+        - 스프링 부트의 스프링 MVC 자동 설정 + 추가 설정
+        - 스프링 부트면 필요한것들을 빈으로 등록하면 알아서 등록해줌 아니면 WebMvcConfigurer 에서 오버라이딩해서 재정의 해도 된다
+    - @Configurationn + @EnableWebMvc + implements WebMvcConfigurer
+        - 스프링 부트의 스프링 MVC 자동설정 사용하지 않음
+        
+        
+    
+
+    
+    
