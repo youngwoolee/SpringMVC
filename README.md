@@ -1,3 +1,5 @@
+[문서자료](https://docs.google.com/document/d/1V05o1_ZxhHIuN2-zkwxcwIcKpJ7V_XrLaJTAXl9VA54/edit#heading=h.27bngx7yn4d7)
+
 ### 1부 Spring MVC 동작원리
 
 - 서블릿(Servlet)
@@ -189,8 +191,65 @@ public class WebConfig {
     - @Configurationn + @EnableWebMvc + implements WebMvcConfigurer
         - 스프링 부트의 스프링 MVC 자동설정 사용하지 않음
         
+### 스프링 부트에서 JSP 사용하기
+
+- JAR 프로젝트로 만들 수 없은. WAR 프로젝트로 만들어아햠
+- JAVA -JAR 로 실행 할 수는 있지만 실행가능한 JAR파일은 지원하지 않음 
+- webapp 밑에 WEB-INF밑에 jsp 디렉토리 구조
+- application.properties
+    ```properties
+      spring.mvc.view.prefix = /WEB-INF/jsp/
+      spring.mvc.view.suffix = .jsp
+    ```
+    
+- 의존성 추가
+    ```xml
+      <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>jstl</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.apache.tomcat.embed</groupId>
+         <artifactId>tomcat-embed-jasper</artifactId>
+         <scope>provided</scope>
+      </dependency>
+    ``` 
+
+### WAR 파일 배포하기
+
+- war:exploded 
+    - war를 풀어서 배포
+- war
+    - war로 묶어서 배포
+    
+    
+### WebMvcConfigurer 설정 : formatter 설정
+
+- Formatter
+    - Printer
+        - 해당 객체를 (Locale 정보를 참고하여) 문자열로 어떠게 출력할 것인가
+    - Parser
+        - 어떤 문자열을 (Locale 정보를 참고하여) 객체로 어떻게 변환할 것인가
+        
+- 추가하는 방법
+    - WebMvcConfigurer 의 addFormatters 메소드 정의하거나
+    - 해당 포매터를 빈으로 등록 (스프링 부트에서만 가능)
+    
+### 도메인 클래스 컨버터
+
+- spring data jpa의 도메인 클래스 컨버터를 활용하면 
+- Formatter을 따로 등록 안하고 @requestParma("id") Person person 맵핑 할 수 있다
+    - 스프링 데이터 JPA가 제공하는 Repository를 사용하여 ID에 해당하는 엔티티를 읽어옵니다
+    
+        
+
+    
+ 
+        
         
     
 
     
-    
+ 
+ 
+ 
